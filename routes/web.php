@@ -21,6 +21,7 @@ Route::middleware('auth') // il nostro "carabiniere con i baffoni" che ci autori
         ->prefix('admin')  // ovvero tutte le rotte avranno /admin come inziio
         ->group(function () {
             Route::get('/', 'HomeController@index')->name('home');
+            Route::resource('posts', 'PostController');
         });
 
 Route::get('{any?}', function() {
