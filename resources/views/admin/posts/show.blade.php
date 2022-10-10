@@ -4,22 +4,22 @@
 
     <div class="container">
 
-        <div>
-            <span class="font-weight-bold">Title:</span>
-            {{$post->title}}
-        </div>
+        <h1>{{$post->title}}</h1>
+
+        <h4>
+            <span class="fw-bold">Slug:</span>
+            {{$post->slug}}
+        </h4>
+
 
         <div>
-            <span class="font-weight-bold">Content:</span>
+            <span class="fw-bold">Content:</span>
             {{$post->content}}
         </div>
 
-        <div>
-            <span class="font-weight-bold">Slug:</span>
-            {{$post->slug}}
-        </div>
 
-        <a href="{{route('admin.posts.index')}}" class="btn btn-primary">Back</a>
+
+        <a href="{{route('admin.posts.index')}}" class="btn btn-primary mt-5">Back</a>
 
     </div>
 
