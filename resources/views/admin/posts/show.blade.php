@@ -11,12 +11,15 @@
             {{$post->slug}}
         </h4>
 
-
         <div>
             <span class="fw-bold">Content:</span>
             {{$post->content}}
         </div>
 
+        <div>
+            <span class="fw-bold">Category:</span>
+            {{$post->category?$post->category->name:'-'}}
+        </div>
 
 
         <a href="{{route('admin.posts.index')}}" class="btn btn-primary mt-5">Back</a>
