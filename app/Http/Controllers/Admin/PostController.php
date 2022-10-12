@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 class PostController extends Controller
@@ -28,7 +29,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -39,10 +42,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
+        //dd($request->all());
+
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required|max:65535',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id'
         ]);
 
         $data = $request->all();
@@ -55,6 +62,10 @@ class PostController extends Controller
         $post->slug = $slug;
 
         $post->save();
+
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        }
 
         return redirect()->route('admin.posts.index')->with('status', 'Post creato con successo!');
 

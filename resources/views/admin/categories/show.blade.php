@@ -11,7 +11,6 @@
             {{$category->slug}}
         </h4>
 
-
         @if (count($category->posts))
             <table class="table table-striped">
                 <thead>

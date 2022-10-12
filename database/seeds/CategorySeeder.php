@@ -4,7 +4,7 @@ use App\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class CategorySeed extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
