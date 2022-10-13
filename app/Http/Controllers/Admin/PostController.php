@@ -55,12 +55,9 @@ class PostController extends Controller
         $data = $request->all();
 
         $post = new Post();
+        $slug = $this->calculateSlug($data['title']);
+        $data['slug'] = $slug;
         $post->fill($data);
-
-        $slug = $this->calculateSlug($post->title);
-
-        $post->slug = $slug;
-
         $post->save();
 
         if (array_key_exists('tags', $data)) {

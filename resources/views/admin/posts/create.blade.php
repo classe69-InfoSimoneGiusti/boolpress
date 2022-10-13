@@ -13,10 +13,13 @@
                 <label for="category_id">Category</label>
 
                 <select name="category_id" class="form-control @error('category_id') is-invalid @enderror" id="category_id">
+
                     <option {{(old('category_id')=="")?'selected':''}} value="">Nessuna categoria</option>
+
                     @foreach ($categories as $category)
                         <option {{(old('category_id')==$category->id)?'selected':''}} value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
+
                 </select>
 
                 @error('category_id')
