@@ -23,6 +23,7 @@ Route::middleware('auth') // il nostro "carabiniere con i baffoni" che ci autori
             Route::get('/', 'HomeController@index')->name('home');
             Route::resource('posts', 'PostController');
             Route::resource('categories', 'CategoryController');
+            Route::resource('tags', 'TagController');
         });
 
 Route::get('{any?}', function() {
