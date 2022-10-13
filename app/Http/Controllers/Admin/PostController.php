@@ -91,7 +91,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -106,7 +107,8 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required|max:65535',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'exists:tags,id'
         ]);
 
         $data = $request->all();
@@ -116,6 +118,12 @@ class PostController extends Controller
         }
 
         $post->update($data);
+
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->sync([]);
+        }
 
         return redirect()->route('admin.posts.index')->with('status', 'Post aggiornato con successo!');
 
@@ -152,6 +160,7 @@ class PostController extends Controller
     public function destroy(Post $post) // equivale a $post = Post::findOrFail($id);
     {
 
+        $post->tags()->sync([]);
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('status', 'Cancellazione avvenuta con successo!');
