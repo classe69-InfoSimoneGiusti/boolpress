@@ -4,12 +4,41 @@
 
     <div class="container">
 
-        <form action="{{route('admin.posts.update', ['post' => $post->id])}}" method="POST">
+        <form action="{{route('admin.posts.deleteCover', ['post' => $post])}}" method="POST" id="deleteCoverForm" class="d-none">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">DELETE IMAGE</button>
+        </form>
+
+        <form action="{{route('admin.posts.update', ['post' => $post->id])}}" method="POST" enctype="multipart/form-data">
 
             @csrf
             @method('PUT')
 
             <h1 class="mb-4">Edit post</h1>
+
+            <div class="form-group mb-3">
+
+                <p>Current image:</p>
+                @if ($post->cover)
+                    <img src="{{asset('storage/' . $post->cover)}}" class="img-fluid"/>
+                    <a href="#" class="btn btn-danger" onclick="event.preventDefault(); document.getElementById('deleteCoverForm').submit();">Delete immagine</a>
+
+                @else
+                    <p>No loaded image!</p>
+                @endif
+
+
+                <label for="cover">Image cover</label>
+                <input type="file" name="image" id="cover" class="form-control-file @error('image') is-invalid @enderror" />
+
+                @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
 
             <div class="form-group mb-3">
                 <label for="category_id">Category</label>

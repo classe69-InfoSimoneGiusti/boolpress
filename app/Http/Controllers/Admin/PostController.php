@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 class PostController extends Controller
 {
@@ -49,10 +50,15 @@ class PostController extends Controller
             'title' => 'required|max:255',
             'content' => 'required|max:65535',
             'category_id' => 'nullable|exists:categories,id',
-            'tags' => 'exists:tags,id'
+            'tags' => 'exists:tags,id',
+            'image' => 'nullable|image|max:8000'
         ]);
 
+
         $data = $request->all();
+
+        $img_path = Storage::put('cover', $data['image']);
+        $data['cover'] = $img_path;
 
         $post = new Post();
         $slug = $this->calculateSlug($data['title']);
@@ -101,14 +107,30 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required|max:65535',
             'category_id' => 'nullable|exists:categories,id',
-            'tags' => 'exists:tags,id'
+            'tags' => 'exists:tags,id',
+            'image' => 'nullable|image|max:8000'
         ]);
 
+
+
+
         $data = $request->all();
+
+        if (array_key_exists('image', $data)) {
+
+            if ($post->cover) {
+                Storage::delete($post->cover);
+            }
+
+            $img_path = Storage::put('cover', $data['image']);
+            $data['cover'] = $img_path;
+
+        }
 
         if ($post->title !== $data['title']) {
             $data['slug'] = $this->calculateSlug($data['title']);
@@ -119,7 +141,7 @@ class PostController extends Controller
         if (array_key_exists('tags', $data)) {
             $post->tags()->sync($data['tags']);
         } else {
-            $post->tags()->sync([]);
+            $post->tags()->detach();
         }
 
         return redirect()->route('admin.posts.index')->with('status', 'Post aggiornato con successo!');
@@ -157,10 +179,31 @@ class PostController extends Controller
     public function destroy(Post $post) // equivale a $post = Post::findOrFail($id);
     {
 
+        if ($post->cover) {
+            Storage::delete($post->cover);
+        }
+
         $post->tags()->sync([]);
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('status', 'Cancellazione avvenuta con successo!');
 
     }
+
+
+    public function deleteCover(Post $post) {
+
+        if ($post->cover) {
+            Storage::delete($post->cover);
+        }
+
+        $post->cover = null;
+        $post->save();
+
+        return redirect()->route('admin.posts.edit', [ 'post' => $post->id])->with('status', 'Immagine cancellata con successo');
+
+    }
+
+
+
 }

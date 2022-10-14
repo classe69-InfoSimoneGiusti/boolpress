@@ -3,11 +3,22 @@
 @section('content')
     <div class="container">
 
-        <form action="{{ route('admin.posts.store') }}" method="POST">
+        <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
 
             <h1 class="mb-4">Add post</h1>
+
+            <div class="form-group mb-3">
+                <label for="cover">Image cover</label>
+                <input type="file" name="image" id="cover" class="form-control-file @error('image') is-invalid @enderror" />
+
+                @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
             <div class="form-group mb-3">
                 <label for="category_id">Category</label>
@@ -60,10 +71,10 @@
                             name="tags[]"
                             type="checkbox"
                             class="form-check-input"
-                            id="tag_{{$tag->id}}"
                             value="{{$tag->id}}"
+                            id="{{$tag->slug}}"
                         >
-                        <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}} {{$tag->id}}</label>
+                        <label class="form-check-label" for="{{$tag->slug}}">{{$tag->name}} {{$tag->id}}</label>
                     </div>
                 @endforeach
 
