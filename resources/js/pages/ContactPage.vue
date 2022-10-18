@@ -1,12 +1,13 @@
 <template>
     <div class="container">
-        <router-view></router-view>
+        <h1>Contattaci per informazioni</h1>
+        <h3>Qui ci andrà il form di contatto</h3>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'MyMain'
+        name: "ContactPage"
     }
 </script>
 
