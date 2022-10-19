@@ -2092,11 +2092,22 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'SinglePost',
+  data: function data() {
+    return {
+      post: null
+    };
+  },
   methods: {
     getSinglePost: function getSinglePost() {
+      var _this = this;
+
       var slug = this.$route.params.slug;
       axios.get('/api/posts/' + slug).then(function (response) {
-        console.log(response);
+        _this.post = response.data.result;
+      })["catch"](function (error) {
+        _this.$router.push({
+          name: 'not-found'
+        });
       });
     }
   },
@@ -2492,10 +2503,45 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("h1", [_vm._v("Pagina del single post")]);
+  return _c("div", [_vm.post ? _c("article", [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("div", {
+    staticClass: "mb-2"
+  }, [_vm._v("\n            " + _vm._s(_vm.post.category ? _vm.post.category.name : "Nessuna categoria") + "\n        ")]), _vm._v(" "), _c("div", {
+    staticClass: "mb-3"
+  }, _vm._l(_vm.post.tags, function (tag) {
+    return _c("span", {
+      key: tag.id,
+      staticClass: "mr-2 badge badge-primary"
+    }, [_vm._v(_vm._s(tag.name))]);
+  }), 0), _vm._v(" "), _c("img", {
+    staticClass: "img-fluid mb-4",
+    attrs: {
+      src: _vm.post.cover,
+      alt: _vm.post.title
+    }
+  }), _vm._v(" "), _c("p", [_vm._v(_vm._s(_vm.post.content))]), _vm._v(" "), _c("router-link", {
+    attrs: {
+      to: {
+        name: "blog"
+      }
+    }
+  }, [_vm._v("Torna alla lista")])], 1) : _c("div", {
+    staticClass: "d-flex justify-content-center"
+  }, [_vm._m(0)])]);
 };
 
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "spinner-border",
+    attrs: {
+      role: "status"
+    }
+  }, [_c("span", {
+    staticClass: "sr-only"
+  }, [_vm._v("Loading...")])]);
+}];
 render._withStripped = true;
 
 

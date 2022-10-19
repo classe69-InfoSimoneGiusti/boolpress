@@ -16,4 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('posts', 'Api\PostController@index');
 
+Route::get('post/random', 'Api\PostController@random');
+
 Route::get('posts/{slug}', 'Api\PostController@show');
+
