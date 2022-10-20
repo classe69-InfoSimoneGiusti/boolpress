@@ -20,3 +20,9 @@ Route::get('post/random', 'Api\PostController@random');
 
 Route::get('posts/{slug}', 'Api\PostController@show');
 
+
+/*Route::get('provaInvioEmail', 'Api\ContactController@provaInvioEmail');*/
+
+Route::post('contacts', 'Api\ContactController@store');
+
+

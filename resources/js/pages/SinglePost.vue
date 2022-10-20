@@ -32,6 +32,7 @@ export default {
     },
     methods: {
         getSinglePost() {
+
             const slug = this.$route.params.slug;
 
             axios.get('/api/posts/' + slug)
