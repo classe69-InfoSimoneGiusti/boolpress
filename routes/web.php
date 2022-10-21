@@ -28,6 +28,8 @@ Route::middleware('auth') // il nostro "carabiniere con i baffoni" che ci autori
 
             Route::get('posts/restore/{post}', 'PostController@restore')->name('posts.restore');
 
+            Route::delete('posts/forceDelete/{post}', 'PostController@forceDelete')->name('posts.forceDelete');
+
             Route::delete('posts/deleteCover/{post}', 'PostController@deleteCover')->name('posts.deleteCover');
         });
 

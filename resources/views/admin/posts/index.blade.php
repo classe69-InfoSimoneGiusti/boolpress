@@ -46,6 +46,13 @@
 
                             @if ($post->deleted_at)
                                 <a href="{{route('admin.posts.restore', ['post' => $post->id])}}" class="btn btn-success me-2 ">Restore</a>
+
+                                <form method="POST" action="{{route('admin.posts.forceDelete', ['post' => $post->id])}}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger me-2 ">Destroy</button>
+                                </form>
+
                             @else
                                 <a href="{{route('admin.posts.show', ['post' => $post->id])}}" class="btn btn-primary me-2 ">Show</a>
                                 <a href="{{route('admin.posts.edit', ['post' => $post->id])}}" class="btn btn-warning me-2 ">Edit</a>

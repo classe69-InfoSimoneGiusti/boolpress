@@ -178,24 +178,25 @@ class PostController extends Controller
      */
     public function destroy(Post $post) // equivale a $post = Post::findOrFail($id);
     {
+        $post->delete();
+        return redirect()->route('admin.posts.index')->with('status', 'Cancellazione avvenuta con successo!');
+    }
 
-        /*
-        // in caso volessi eliminare forzatamente un dato nel DB anche se è presente la softDelete
+
+    public function forceDelete($id) {
+
+        $post = Post::withTrashed()->where('id', $id)->first();
+
         if ($post->cover) {
             Storage::delete($post->cover);
         }
 
         $post->tags()->sync([]);
-
         $post->forceDelete();
-        */
 
-        $post->delete();
-
-        return redirect()->route('admin.posts.index')->with('status', 'Cancellazione avvenuta con successo!');
+        return redirect()->route('admin.posts.index')->with('status', 'Eliminazione completa avvenuta con successo!');
 
     }
-
 
     public function deleteCover(Post $post) {
 
