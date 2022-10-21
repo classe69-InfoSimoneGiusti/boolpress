@@ -25,6 +25,9 @@ Route::middleware('auth') // il nostro "carabiniere con i baffoni" che ci autori
             Route::resource('categories', 'CategoryController');
             Route::resource('tags', 'TagController');
 
+
+            Route::get('posts/restore/{post}', 'PostController@restore')->name('posts.restore');
+
             Route::delete('posts/deleteCover/{post}', 'PostController@deleteCover')->name('posts.deleteCover');
         });
 

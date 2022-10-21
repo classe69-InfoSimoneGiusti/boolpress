@@ -11,7 +11,7 @@
             {{$category->slug}}
         </h4>
 
-        @if (count($category->posts))
+        @if (count($category->posts()->withTrashed()->get()))
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($category->posts as $post)
+                    @foreach ($category->posts()->withTrashed()->get() as $post)
                         <tr>
                             <th scope="row">{{$post->id}}</th>
                             <td>{{$post->title}}</td>

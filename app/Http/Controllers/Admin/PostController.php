@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::withTrashed()->get();
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -154,14 +154,14 @@ class PostController extends Controller
         //inizio calcolo dello slug
         $slug = Str::slug($title, '-');
 
-        $checkPost = Post::where('slug', $slug)->first();
+        $checkPost = Post::withTrashed()->where('slug', $slug)->first();
 
         $counter = 1;
 
         while($checkPost) {
             $slug = Str::slug($title . '-' . $counter, '-');
             $counter++;
-            $checkPost = Post::where('slug', $slug)->first();
+            $checkPost = Post::withTrashed()->where('slug', $slug)->first();
         }
         //fine calcolo dello slug
 
@@ -179,11 +179,17 @@ class PostController extends Controller
     public function destroy(Post $post) // equivale a $post = Post::findOrFail($id);
     {
 
+        /*
+        // in caso volessi eliminare forzatamente un dato nel DB anche se è presente la softDelete
         if ($post->cover) {
             Storage::delete($post->cover);
         }
 
         $post->tags()->sync([]);
+
+        $post->forceDelete();
+        */
+
         $post->delete();
 
         return redirect()->route('admin.posts.index')->with('status', 'Cancellazione avvenuta con successo!');
@@ -201,6 +207,16 @@ class PostController extends Controller
         $post->save();
 
         return redirect()->route('admin.posts.edit', [ 'post' => $post->id])->with('status', 'Immagine cancellata con successo');
+
+    }
+
+
+    public function restore ($id) {
+
+        $post = Post::withTrashed()->where('id', $id)->first();
+        $post->restore();
+
+        return redirect()->route('admin.posts.index')->with('status', 'Post ripristinato con successo');
 
     }
 
