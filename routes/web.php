@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::middleware('auth') // il nostro "carabiniere con i baffoni" che ci autorizzera o meno a passare in base a se sei loggato o meno
         ->namespace('Admin') // ovvero cerco nella cartella Admin di Controllers
@@ -25,11 +25,8 @@ Route::middleware('auth') // il nostro "carabiniere con i baffoni" che ci autori
             Route::resource('categories', 'CategoryController');
             Route::resource('tags', 'TagController');
 
-
             Route::get('posts/restore/{post}', 'PostController@restore')->name('posts.restore');
-
             Route::delete('posts/forceDelete/{post}', 'PostController@forceDelete')->name('posts.forceDelete');
-
             Route::delete('posts/deleteCover/{post}', 'PostController@deleteCover')->name('posts.deleteCover');
         });
 
