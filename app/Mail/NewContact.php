@@ -31,6 +31,6 @@ class NewContact extends Mailable
     public function build()
     {
         //return $this->view('emails.new-contact', ['lead' => $this->lead]);
-        return $this->view('emails.new-contact'); // sintassi valida solo se $lead è public
+        return $this->replyTo($this->lead->email)->view('emails.new-contact'); // sintassi valida solo se $lead è public
     }
 }
